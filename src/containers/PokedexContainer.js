@@ -7,6 +7,15 @@ function PokedexContainer() {
     const [error, setError] = useState(null);
     const [currentImage, setCurrentImage] = useState('');
 
+    // format the Pokemon name reponse 
+    const formatPokemonName = (name) => {
+        return name
+            .replace(/-/g, ' ')
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join(' ');
+    };
+
     // Fetch the list of Pokemon 
     useEffect(() => {
         const fetchPokemonList = async () => {
@@ -33,7 +42,7 @@ function PokedexContainer() {
             const hoverImage = data.sprites.front_shiny;
             const defaultImage = data.sprites.front_default;
             setSelectedPokemon({
-                name: data.name,
+                name: formatPokemonName(data.name),
                 abilities: data.abilities.map((ability) => ability.ability.name).join(', '),
                 image: defaultImage,
                 games: data.game_indices.map((game) => game.version.name).join(', '),
