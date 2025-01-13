@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Fuse from 'fuse.js';
 import './PokedexContainer.scss';
-
+import pokemonLogo from '../Assets/pokemonLogo.svg.png';
 
 function PokedexContainer() {
     const [pokemonList, setPokemonList] = useState([]);
@@ -81,76 +81,96 @@ function PokedexContainer() {
 
     return (
         <div className="pokedex-container">
-        <h1>Pokédex</h1>
-    
-        {error && (
-            <div className="error-message">
-                <p>{error}</p>
-                <button
-                    onClick={() => {
-                        setSearchTerm('');
-                        setError('');
-                        setSelectedPokemon(null);
-                        setCurrentImage('');
-                        setSuggestions([]);
+            <img src={pokemonLogo} alt="Pokédex Logo" className="pokedex-logo" />
+            <h1>Pokédex</h1>
+        
+            {error && (
+                <div className="error-message">
+                    <p>{error}</p>
+                    <button
+                        onClick={() => {
+                            setSearchTerm('');
+                            setError('');
+                            setSelectedPokemon(null);
+                            setCurrentImage('');
+                            setSuggestions([]);
+                        }}
+                    >
+                        Clear Search
+                    </button>
+                </div>
+            )}
+        
+            <div>
+                <select onChange={(e) => fetchPokemonDetails(e.target.value)}>
+                    <option value="">Choose your Pokémon</option>
+                    {pokemonList.map((pokemon) => (
+                        <option key={pokemon.name} value={pokemon.url}>
+                            {formatText(pokemon.name)}
+                        </option>
+                    ))}
+                </select>
+        
+                <input
+                    value={searchTerm}
+                    onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        handleSearch();
                     }}
-                >
-                    Clear Search
+                    placeholder="Enter Pokémon name..."
+                />
+                <button onClick={handleSearch} type="button">
+                    Search
                 </button>
             </div>
-        )}
-    
-        <div>
-            <select onChange={(e) => fetchPokemonDetails(e.target.value)}>
-                <option value="">Choose your Pokémon</option>
-                {pokemonList.map((pokemon) => (
-                    <option key={pokemon.name} value={pokemon.url}>
-                        {formatText(pokemon.name)}
-                    </option>
-                ))}
-            </select>
-    
-            <input
-                value={searchTerm}
-                onChange={(e) => {
-                    setSearchTerm(e.target.value);
-                    handleSearch();
-                }}
-                placeholder="Enter Pokémon name..."
-            />
-            <button onClick={handleSearch} type="button">
-                Search
-            </button>
+        
+            {suggestions.length > 0 && (
+                <ul className="suggestions">
+                    {suggestions.map((pokemon, index) => (
+                        <li
+                            key={index}
+                            onClick={() => fetchPokemonDetails(pokemon.url)}
+                        >
+                            {formatText(pokemon.name)}
+                        </li>
+                    ))}
+                </ul>
+            )}
+        
+            {selectedPokemon && (
+                <div className="selected-pokemon">
+                    <img
+                        src={currentImage}
+                        alt={selectedPokemon.name}
+                        onMouseEnter={() => setCurrentImage(selectedPokemon.hoverImage)}
+                        onMouseLeave={() => setCurrentImage(selectedPokemon.image)}
+                    />
+                    <h4>{selectedPokemon.name}</h4>
+
+                    {selectedPokemon.abilities && (
+                        <div className="abilities">
+                            <h5>Abilities:</h5>
+                            <ul>
+                                {selectedPokemon.abilities.split(', ').map((ability, index) => (
+                                    <li key={index}>{ability}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {selectedPokemon.games && (
+                        <div className="games">
+                            <h5>Game Appearances:</h5>
+                            <ul>
+                                {selectedPokemon.games.split(', ').map((game, index) => (
+                                    <li key={index}>{game}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
-    
-        {suggestions.length > 0 && (
-            <ul className="suggestions">
-                {suggestions.map((pokemon, index) => (
-                    <li
-                        key={index}
-                        onClick={() => fetchPokemonDetails(pokemon.url)}
-                    >
-                        {formatText(pokemon.name)}
-                    </li>
-                ))}
-            </ul>
-        )}
-    
-        {selectedPokemon && (
-            <div className="selected-pokemon">
-                <img
-                    src={currentImage}
-                    alt={selectedPokemon.name}
-                    onMouseEnter={() => setCurrentImage(selectedPokemon.hoverImage)}
-                    onMouseLeave={() => setCurrentImage(selectedPokemon.image)}
-                />
-                <h4>{selectedPokemon.name}</h4>
-                {selectedPokemon.abilities && <p>Abilities: {selectedPokemon.abilities}</p>}
-                {selectedPokemon.games && <p>Game Appearances: {selectedPokemon.games}</p>}
-            </div>
-        )}
-    </div>
-    
     );
 }
 
