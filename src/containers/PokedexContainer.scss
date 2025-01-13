@@ -1,0 +1,138 @@
+// Color theme variables
+$primary-color: #FF0000;
+$secondary-color: #CC0000;
+$accent-color: #3B4CCA;
+$highlight-color: #FFDE00;
+$neutral-color: #B3A125;
+$background-color: $secondary-color;
+$text-color: #ffffff;
+
+// Global styles
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: $background-color;
+  color: $text-color;
+}
+
+// Container styles
+.pokedex-container {
+  padding: 20px;
+  text-align: center;
+
+  h1 {
+    color: $highlight-color;
+    margin-bottom: 20px;
+  }
+
+  .error-message {
+    color: $highlight-color;
+    margin-bottom: 10px;
+
+    button {
+      background: $primary-color;
+      color: $text-color;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+
+  select {
+    padding: 10px;
+    margin-right: 10px;
+    font-size: 16px;
+    border: 2px solid $neutral-color;
+    border-radius: 5px;
+    background-color: $text-color;
+    color: $secondary-color;
+    height: 40px; /* Ensure consistent height */
+    -webkit-appearance: none; /* Remove default styling in Safari */
+    -moz-appearance: none; /* Firefox */
+    appearance: none; /* Remove default styling in other browsers */
+    
+    /* Add a custom down arrow icon */
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"%3E%3Cpath fill="none" stroke="%23B3A125" stroke-width="1.5" d="M2 4l4 4 4-4" /%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+
+    &:focus {
+      border-color: $highlight-color;
+      outline: none;
+    }
+  }
+
+  input {
+    padding: 10px;
+    margin-right: 10px;
+    font-size: 16px;
+    border: 2px solid $neutral-color;
+    border-radius: 5px;
+    background-color: $text-color;
+    color: $secondary-color;
+
+    &:focus {
+      border-color: $highlight-color;
+      outline: none;
+    }
+  }
+
+  button {
+    background: $primary-color;
+    color: $text-color;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background: $accent-color;
+    }
+  }
+
+  ul.suggestions {
+    list-style: none;
+    padding: 0;
+    margin: 10px auto;
+    max-width: 400px;
+    border: 2px solid $neutral-color;
+    border-radius: 5px;
+    background-color: $text-color;
+    color: $secondary-color;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+    li {
+      padding: 10px;
+      border-bottom: 1px solid $neutral-color;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $highlight-color;
+        color: $text-color;
+      }
+    }
+  }
+
+  .selected-pokemon {
+    margin-top: 20px;
+
+    img {
+      width: 150px;
+      height: 150px;
+      margin-bottom: 10px;
+      border: 2px solid $neutral-color;
+      border-radius: 50%;
+    }
+
+    h4 {
+      margin: 10px 0;
+      color: $highlight-color;
+    }
+
+    p {
+      margin: 5px 0;
+      color: $text-color;
+    }
+  }
+}
