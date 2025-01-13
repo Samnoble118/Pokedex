@@ -18,10 +18,18 @@ body {
 }
 .pokedex-container .pokedex-logo {
   width: 200px;
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+}
+@media (max-width: 768px) {
+  .pokedex-container .pokedex-logo {
+    width: 150px;
+  }
+}
+@media (max-width: 480px) {
+  .pokedex-container .pokedex-logo {
+    width: 120px;
+  }
 }
 .pokedex-container h1 {
   color: #FFDE00;
@@ -51,7 +59,6 @@ body {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  /* Add a custom down arrow icon */
   background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"%3E%3Cpath fill="none" stroke="%23B3A125" stroke-width="1.5" d="M2 4l4 4 4-4" /%3E%3C/svg%3E');
   background-repeat: no-repeat;
   background-position: right 10px center;
@@ -89,8 +96,8 @@ body {
   padding: 0;
   margin: 10px auto;
   max-width: 400px;
-  max-height: 300px; /* Limit the height of the suggestions list */
-  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 300px;
+  overflow-y: auto;
   border: 2px solid #B3A125;
   border-radius: 5px;
   background-color: #ffffff;
@@ -127,7 +134,7 @@ body {
 .pokedex-container .selected-pokemon .abilities,
 .pokedex-container .selected-pokemon .games {
   margin-top: 10px;
-  text-align: center; /* Center the text content */
+  text-align: center;
 }
 .pokedex-container .selected-pokemon .abilities h5,
 .pokedex-container .selected-pokemon .games h5 {
@@ -143,7 +150,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  justify-content: center; /* Center the list items */
+  justify-content: center;
 }
 .pokedex-container .selected-pokemon .abilities li,
 .pokedex-container .selected-pokemon .games li {
@@ -152,12 +159,12 @@ body {
   padding: 5px 10px;
   border-radius: 5px;
   font-size: 14px;
-  text-align: center; /* Center text inside each item */
+  text-align: center;
 }
 .pokedex-container .selected-pokemon .abilities li:hover,
 .pokedex-container .selected-pokemon .games li:hover {
   background-color: #FFDE00;
-  color: #3B4CCA; /* Change hover font color */
+  color: #3B4CCA;
 }
 
 @media (max-width: 768px) {

@@ -10,17 +10,23 @@ function PokedexContainer() {
     const [error, setError] = useState(null);
     const [currentImage, setCurrentImage] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
-    const [suggestions, setSuggestions] = useState([]); 
+    const [suggestions, setSuggestions] = useState([]);
 
-    const formatText = (text) => {
-        return text
-            .replace(/-/g, ' ')
-            .split(' ')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-            .join(' ');
+    const debounce = (func, delay) => {
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => func(...args), delay);
+        };
     };
 
-    // Fetch Pokémon list
+    const formatText = (text) =>
+        text
+            .replace(/-/g, ' ')
+            .split(' ')
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join(' ');
+
     useEffect(() => {
         const fetchPokemonList = async () => {
             try {
@@ -30,6 +36,7 @@ function PokedexContainer() {
                 setPokemonList(data.results);
                 setLoading(false);
             } catch (err) {
+                console.error(err);
                 setError('Failed to load the Pokémon list!');
                 setLoading(false);
             }
@@ -37,21 +44,19 @@ function PokedexContainer() {
         fetchPokemonList();
     }, []);
 
-    const fuse = new Fuse(pokemonList, {
-        keys: ['name'],
-        threshold: 0.4, 
-    });
+    const fuse = new Fuse(pokemonList, { keys: ['name'], threshold: 0.4 });
 
     const handleSearch = () => {
         if (!searchTerm.trim()) {
             setError('Please enter a Pokémon name!');
-            setSuggestions([]); 
+            setSuggestions([]);
             return;
         }
-
         const results = fuse.search(searchTerm);
-        setSuggestions(results.map(result => result.item)); 
+        setSuggestions(results.map((result) => result.item));
     };
+
+    const debouncedHandleSearch = debounce(handleSearch, 300);
 
     const fetchPokemonDetails = async (url) => {
         try {
@@ -59,19 +64,18 @@ function PokedexContainer() {
             setLoading(true);
             const response = await fetch(url);
             const data = await response.json();
-            const hoverImage = data.sprites.front_shiny;
-            const defaultImage = data.sprites.front_default;
             setSelectedPokemon({
                 name: formatText(data.name),
                 abilities: data.abilities.map((ability) => formatText(ability.ability.name)).join(', '),
-                image: defaultImage,
+                image: data.sprites.front_default,
                 games: data.game_indices.map((game) => formatText(game.version.name)).join(', '),
-                hoverImage: hoverImage,
+                hoverImage: data.sprites.front_shiny,
             });
-            setCurrentImage(defaultImage);
-            setSuggestions([]); 
+            setCurrentImage(data.sprites.front_default);
+            setSuggestions([]);
             setLoading(false);
         } catch (err) {
+            console.error(err);
             setError(`Couldn't find the Pokémon!`);
             setLoading(false);
         }
@@ -83,7 +87,7 @@ function PokedexContainer() {
         <div className="pokedex-container">
             <img src={pokemonLogo} alt="Pokédex Logo" className="pokedex-logo" />
             <h1>Pokédex</h1>
-        
+
             {error && (
                 <div className="error-message">
                     <p>{error}</p>
@@ -100,7 +104,7 @@ function PokedexContainer() {
                     </button>
                 </div>
             )}
-        
+
             <div>
                 <select onChange={(e) => fetchPokemonDetails(e.target.value)}>
                     <option value="">Choose your Pokémon</option>
@@ -110,12 +114,12 @@ function PokedexContainer() {
                         </option>
                     ))}
                 </select>
-        
+
                 <input
                     value={searchTerm}
                     onChange={(e) => {
                         setSearchTerm(e.target.value);
-                        handleSearch();
+                        debouncedHandleSearch();
                     }}
                     placeholder="Enter Pokémon name..."
                 />
@@ -123,20 +127,17 @@ function PokedexContainer() {
                     Search
                 </button>
             </div>
-        
+
             {suggestions.length > 0 && (
                 <ul className="suggestions">
                     {suggestions.map((pokemon, index) => (
-                        <li
-                            key={index}
-                            onClick={() => fetchPokemonDetails(pokemon.url)}
-                        >
+                        <li key={index} onClick={() => fetchPokemonDetails(pokemon.url)}>
                             {formatText(pokemon.name)}
                         </li>
                     ))}
                 </ul>
             )}
-        
+
             {selectedPokemon && (
                 <div className="selected-pokemon">
                     <img
