@@ -1,0 +1,54 @@
+.pokemon-details-page {
+  text-align: center;
+  padding: 20px;
+}
+.pokemon-details-page .go-back-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #ffcb05;
+  border: none;
+  border-radius: 5px;
+  color: #2a75bb;
+  font-weight: bold;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.pokemon-details-page .go-back-btn:hover {
+  background-color: #2a75bb;
+  color: #ffcb05;
+}
+.pokemon-details-page img {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+}
+.pokemon-details-page h1 {
+  color: #FFDE00;
+  margin-top: 20px;
+}
+.pokemon-details-page .abilities,
+.pokemon-details-page .games {
+  margin-top: 20px;
+  text-align: left;
+}
+.pokemon-details-page .abilities h5,
+.pokemon-details-page .games h5 {
+  color: #FFDE00;
+}
+.pokemon-details-page button {
+  background: #FF0000;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+.pokemon-details-page button:hover {
+  background: #3B4CCA;
+}
+
+/*# sourceMappingURL=PokemonDetailsPage.css.map */

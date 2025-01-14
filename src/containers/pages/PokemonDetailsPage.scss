@@ -1,0 +1,65 @@
+// variables import
+@use '/Users/Sam/Documents/Personal/React/samreactapp/src/containers/variables' as *;
+
+.pokemon-details-page {
+    text-align: center;
+    padding: 20px;
+  
+    .go-back-btn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #ffcb05;
+      border: none;
+      border-radius: 5px;
+      color: #2a75bb;
+      font-weight: bold;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+      &:hover {
+          background-color: #2a75bb;
+          color: #ffcb05;
+      }
+  }
+  
+
+    img {
+      width: 200px;
+      height: 200px;
+      border-radius: 10px;
+    }
+  
+    h1 {
+      color: $highlight-color;
+      margin-top: 20px;
+    }
+  
+    .abilities,
+    .games {
+      margin-top: 20px;
+      text-align: left;
+    }
+  
+    .abilities h5,
+    .games h5 {
+      color: $highlight-color;
+    }
+  
+    button {
+      background: $primary-color;
+      color: $text-color;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+  
+      &:hover {
+        background: $accent-color;
+      }
+    }
+  }
+  

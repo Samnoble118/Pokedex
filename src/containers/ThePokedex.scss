@@ -1,11 +1,5 @@
-// Color theme variables
-$primary-color: #FF0000;
-$secondary-color: #CC0000;
-$accent-color: #3B4CCA;
-$highlight-color: #FFDE00;
-$neutral-color: #B3A125;
-$background-color: $secondary-color;
-$text-color: #ffffff;
+// variables import
+@use '/Users/Sam/Documents/Personal/React/samreactapp/src/containers/variables' as *;
 
 // Global styles
 *,
@@ -192,6 +186,21 @@ body {
   }
 }
 
+.view-more-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #f8c2c2;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+      background-color: #f08989;
+  }
+}
+
+
 // Responsive Styles
 
 @media (max-width: 768px) {
@@ -201,7 +210,7 @@ body {
     select,
     input,
     button {
-      width: 100%;
+      width: 80%;
       margin-right: 0;
       margin-bottom: 10px;
     }

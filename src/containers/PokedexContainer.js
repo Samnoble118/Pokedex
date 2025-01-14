@@ -4,6 +4,7 @@ import './ThePokedex.scss';
 import pokemonLogo from '../Assets/pokemonLogo.svg.png';
 import PokemonDetails from './PokemonDetails';
 import ErrorMessage from './ErrorMessage'; 
+import { Link } from 'react-router-dom';
 
 function PokedexContainer() {
     const [pokemonList, setPokemonList] = useState([]);
@@ -142,11 +143,18 @@ function PokedexContainer() {
                 </ul>
             )}
 
-            <PokemonDetails
-                selectedPokemon={selectedPokemon}
-                currentImage={currentImage}
-                setCurrentImage={setCurrentImage}
-            />
+            {selectedPokemon && (
+                <div className="pokemon-summary">
+                    <PokemonDetails
+                        selectedPokemon={selectedPokemon}
+                        currentImage={currentImage}
+                        setCurrentImage={setCurrentImage}
+                    />
+                <Link to={`/pokemon/${selectedPokemon.name.toLowerCase()}`}>
+                    <button className="view-more-btn">View More</button>
+                </Link>
+                </div>
+            )}
         </div>
     );
 }
