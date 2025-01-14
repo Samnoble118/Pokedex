@@ -2,77 +2,162 @@
 @use '/Users/Sam/Documents/Personal/React/samreactapp/src/containers/variables' as *;
 
 .pokemon-details-page {
-    text-align: center;
-    padding: 20px;
-  
-    .go-back-btn {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background-color: #ffcb05;
-      border: none;
-      border-radius: 5px;
-      color: #2a75bb;
-      font-weight: bold;
-      padding: 8px 12px;
-      cursor: pointer;
-      font-size: 14px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  
-      &:hover {
-          background-color: #2a75bb;
-          color: #ffcb05;
-      }
-  }
-  
+  text-align: center;
+  padding: 20px;
 
-    img {
-      width: 200px;
-      height: 200px;
-      border-radius: 10px;
+  .go-back-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ffcb05;
+    border: none;
+    border-radius: 5px;
+    color: #2a75bb;
+    font-weight: bold;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      background-color: #2a75bb;
+      color: #ffcb05;
     }
-  
+  }
+
+  .header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+
     h1 {
       color: $highlight-color;
-      margin-top: 20px;
+      padding: 10px;
     }
-  
-    .abilities,
-    .games,
-    .types,
-    .stats,
-    .pokedexId,
-    .weight,
-    .height {
-      margin-top: 20px;
-      text-align: left;
 
-      h5{
+    .pokedexId {
+      text-align: center;
+      padding: 10px;
+
+      h5 {
+        margin: 0;
         color: $highlight-color;
       }
 
-      ul {
-        list-style-type: none;
-        padding: 0;
-      }
-      li {
-          margin-bottom: 5px;
-      }
-    }
-  
-  
-    button {
-      background: $primary-color;
-      color: $text-color;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 20px;
-  
-      &:hover {
-        background: $accent-color;
+      p {
+        margin: 0;
       }
     }
   }
-  
+
+  .content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+
+    .image-column {
+      flex: 0 0 50%; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+      }
+    }
+
+    .details-column {
+      flex: 0 0 50%;
+      display: flex;
+      flex-direction: column; 
+      gap: 20px; 
+    
+      .types-and-abilities {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px; 
+    
+        > div {
+          flex: 1;
+          text-align: left;
+    
+          h5 {
+            margin-bottom: 5px;
+            color: $highlight-color;
+          }
+        }
+      }
+
+      .stats-height-weight {
+        display: flex;
+        justify-content: space-between; 
+        gap: 20px; 
+    
+        .stats {
+          flex: 1;
+          text-align: left;
+    
+          h5 {
+            margin-bottom: 5px;
+            color: $highlight-color;
+          }
+    
+          ul {
+            list-style-type: none;
+            padding: 0;
+    
+            li {
+              margin-bottom: 5px;
+            }
+          }
+        }
+
+        .height-weight {
+          flex: 1;
+          display: flex;
+          flex-direction: column; 
+          gap: 10px;
+          text-align: left;
+    
+          h5 {
+            margin-bottom: 5px;
+            color: $highlight-color;
+          }
+    
+          p {
+            margin: 0;
+          }
+        }
+      }
+
+      .games {
+        margin-top: 10px;
+        text-align: left; 
+    
+        h5 {
+          margin-bottom: 5px;
+          color: $highlight-color;
+        }
+    
+        p {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .content {
+      flex-direction: column; 
+      gap: 0; 
+
+      .image-column,
+      .details-column {
+        max-width: 100%; 
+      }
+    }
+  }
+}

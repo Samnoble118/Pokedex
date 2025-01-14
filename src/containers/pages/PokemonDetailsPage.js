@@ -7,6 +7,7 @@ function PokemonDetailsPage() {
     const [pokemon, setPokemon] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [currentImage, setCurrentImage] = useState('');
     const navigate = useNavigate();
 
     const formatText = (text) =>
@@ -38,6 +39,7 @@ function PokemonDetailsPage() {
                     weight: data.weight, 
                 });                
                 setLoading(false);
+                setCurrentImage(data.sprites.other['official-artwork'].front_default);
             } catch (err) {
                 setError('Failed to load Pokémon details!');
                 setLoading(false);
@@ -52,62 +54,73 @@ function PokemonDetailsPage() {
 
     return (
         <div className="pokemon-details-page">
-            
             <button className="go-back-btn" onClick={() => navigate(-1)}>
                 ← Go Back
             </button>
-            
-            <img
-                src={pokemon.image}
-                alt={pokemon.name}
-                onMouseEnter={() => setPokemon({ ...pokemon, image: pokemon.hoverImage })}
-                onMouseLeave={() => setPokemon({ ...pokemon, image: pokemon.image })}
-            />
-            <h1>{pokemon.name}</h1>
 
-            <div className="pokedexId">
-                <h5>Pokedex ID:</h5>
-                <p>{`#${pokemon.pokedexId.toString().padStart(4, '0')}`}</p>
-            </div>
-
-            <div className="types">
-                <h5>Type:</h5>
-                <p>{pokemon.types}</p>
-            </div>
-
-            {pokemon.stats && (
-                <div className="stats">
-                    <h5>Stats:</h5>
-                    <ul>
-                        {pokemon.stats.map((stat, index) => (
-                            <li key={index}>
-                                {stat.name}: {stat.baseStat} 
-                            </li>
-                        ))}
-                    </ul>
+            <div className="header">
+                <h1>{pokemon.name}</h1>
+                <div className="pokedexId">
+                    <h5>Pokedex ID:</h5>
+                    <p>{`#${pokemon.pokedexId.toString().padStart(4, '0')}`}</p>
                 </div>
-            )}
-
-            <div className="abilities">
-                <h5>Abilities:</h5>
-                <p>{pokemon.abilities}</p>
             </div>
 
-            <div className="games">
-                <h5>Game Appearances:</h5>
-                <p>{pokemon.games}</p>
-            </div>
+            <div className="content">
+                <div className="image-column">
+                    <img
+                        src={currentImage}
+                        alt={pokemon.name}
+                        onMouseEnter={() => setCurrentImage(pokemon.hoverImage)}
+                        onMouseLeave={() => setCurrentImage(pokemon.image)}
+                    />
+                </div>
 
-            <div className="weight">
-                <h5>Weight:</h5>
-                <p>{pokemon.weight}</p>
-            </div>
+                <div className="details-column">
+                    {/* Type and Abilities - In-line */}
+                    <div className="types-and-abilities">
+                        <div className="types">
+                            <h5>Type:</h5>
+                            <p>{pokemon.types}</p>
+                        </div>
+                        <div className="abilities">
+                            <h5>Abilities:</h5>
+                            <p>{pokemon.abilities}</p>
+                        </div>
+                    </div>
 
-            <div className="height">
-                <h5>Height:</h5>
-                <p>{pokemon.height}</p>
-            </div>
+                    {/* Stats and Height/Weight - Inline */}
+                    <div className="stats-height-weight">
+                        <div className="stats">
+                            <h5>Stats:</h5>
+                            <ul>
+                                {pokemon.stats.map((stat, index) => (
+                                    <li key={index}>
+                                        {stat.name}: {stat.baseStat}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
 
+                        <div className="height-weight">
+                            <div className="height">
+                                <h5>Height:</h5>
+                                <p>{pokemon.height}</p>
+                            </div>
+                            <div className="weight">
+                                <h5>Weight:</h5>
+                                <p>{pokemon.weight}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Game Appearances - Below Stats and Height/Weight */}
+                    <div className="games">
+                        <h5>Game Appearances:</h5>
+                        <p>{pokemon.games}</p>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
