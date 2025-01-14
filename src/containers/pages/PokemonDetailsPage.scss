@@ -38,15 +38,28 @@
     }
   
     .abilities,
-    .games {
+    .games,
+    .types,
+    .stats,
+    .pokedexId,
+    .weight,
+    .height {
       margin-top: 20px;
       text-align: left;
+
+      h5{
+        color: $highlight-color;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+          margin-bottom: 5px;
+      }
     }
   
-    .abilities h5,
-    .games h5 {
-      color: $highlight-color;
-    }
   
     button {
       background: $primary-color;

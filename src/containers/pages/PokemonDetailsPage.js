@@ -28,7 +28,15 @@ function PokemonDetailsPage() {
                     image: data.sprites.other['official-artwork'].front_default,
                     hoverImage: data.sprites.other['official-artwork'].front_shiny,
                     games: data.game_indices.map((game) => formatText(game.version.name)).join(', '),
-                });
+                    types: data.types.map((type) => formatText(type.type.name)).join(', '),
+                    stats: data.stats.map((stat) => ({
+                        name: formatText(stat.stat.name),
+                        baseStat: stat.base_stat,
+                    })),
+                    pokedexId: data.id,
+                    height: data.height,
+                    weight: data.weight, 
+                });                
                 setLoading(false);
             } catch (err) {
                 setError('Failed to load Pokémon details!');
@@ -57,6 +65,29 @@ function PokemonDetailsPage() {
             />
             <h1>{pokemon.name}</h1>
 
+            <div className="pokedexId">
+                <h5>Pokedex ID:</h5>
+                <p>{`#${pokemon.pokedexId.toString().padStart(4, '0')}`}</p>
+            </div>
+
+            <div className="types">
+                <h5>Type:</h5>
+                <p>{pokemon.types}</p>
+            </div>
+
+            {pokemon.stats && (
+                <div className="stats">
+                    <h5>Stats:</h5>
+                    <ul>
+                        {pokemon.stats.map((stat, index) => (
+                            <li key={index}>
+                                {stat.name}: {stat.baseStat} 
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
             <div className="abilities">
                 <h5>Abilities:</h5>
                 <p>{pokemon.abilities}</p>
@@ -66,6 +97,17 @@ function PokemonDetailsPage() {
                 <h5>Game Appearances:</h5>
                 <p>{pokemon.games}</p>
             </div>
+
+            <div className="weight">
+                <h5>Weight:</h5>
+                <p>{pokemon.weight}</p>
+            </div>
+
+            <div className="height">
+                <h5>Height:</h5>
+                <p>{pokemon.height}</p>
+            </div>
+
         </div>
     );
 }
