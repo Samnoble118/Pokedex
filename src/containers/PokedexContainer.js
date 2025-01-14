@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import Fuse from 'fuse.js';
-import './PokedexContainer.scss';
+import './ThePokedex.scss';
 import pokemonLogo from '../Assets/pokemonLogo.svg.png';
+import PokemonDetails from './PokemonDetails';
+import ErrorMessage from './ErrorMessage'; 
 
 function PokedexContainer() {
     const [pokemonList, setPokemonList] = useState([]);
@@ -53,7 +55,12 @@ function PokedexContainer() {
             return;
         }
         const results = fuse.search(searchTerm);
-        setSuggestions(results.map((result) => result.item));
+        if (results.length === 0) {
+            setError('No Pokémon found!');
+        } else {
+            setSuggestions(results.map((result) => result.item));
+            setError(null);  
+        }
     };
 
     const debouncedHandleSearch = debounce(handleSearch, 300);
@@ -68,8 +75,8 @@ function PokedexContainer() {
                 name: formatText(data.name),
                 abilities: data.abilities.map((ability) => formatText(ability.ability.name)).join(', '),
                 image: data.sprites.front_default,
+                hoverImage: data.sprites.front_shiny || data.sprites.front_default,  
                 games: data.game_indices.map((game) => formatText(game.version.name)).join(', '),
-                hoverImage: data.sprites.front_shiny,
             });
             setCurrentImage(data.sprites.front_default);
             setSuggestions([]);
@@ -81,6 +88,20 @@ function PokedexContainer() {
         }
     };
 
+    const clearSearch = () => {
+        setSearchTerm('');
+        setError('');
+        setSelectedPokemon(null);
+        setCurrentImage('');
+        setSuggestions([]);
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
     if (loading) return <div>Loading...</div>;
 
     return (
@@ -88,22 +109,7 @@ function PokedexContainer() {
             <img src={pokemonLogo} alt="Pokédex Logo" className="pokedex-logo" />
             <h1>Pokédex</h1>
 
-            {error && (
-                <div className="error-message">
-                    <p>{error}</p>
-                    <button
-                        onClick={() => {
-                            setSearchTerm('');
-                            setError('');
-                            setSelectedPokemon(null);
-                            setCurrentImage('');
-                            setSuggestions([]);
-                        }}
-                    >
-                        Clear Search
-                    </button>
-                </div>
-            )}
+            {error && <ErrorMessage error={error} clearSearch={clearSearch} />}  
 
             <div>
                 <select onChange={(e) => fetchPokemonDetails(e.target.value)}>
@@ -117,10 +123,8 @@ function PokedexContainer() {
 
                 <input
                     value={searchTerm}
-                    onChange={(e) => {
-                        setSearchTerm(e.target.value);
-                        debouncedHandleSearch();
-                    }}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyDown={handleKeyDown}  
                     placeholder="Enter Pokémon name..."
                 />
                 <button onClick={handleSearch} type="button">
@@ -138,39 +142,11 @@ function PokedexContainer() {
                 </ul>
             )}
 
-            {selectedPokemon && (
-                <div className="selected-pokemon">
-                    <img
-                        src={currentImage}
-                        alt={selectedPokemon.name}
-                        onMouseEnter={() => setCurrentImage(selectedPokemon.hoverImage)}
-                        onMouseLeave={() => setCurrentImage(selectedPokemon.image)}
-                    />
-                    <h4>{selectedPokemon.name}</h4>
-
-                    {selectedPokemon.abilities && (
-                        <div className="abilities">
-                            <h5>Abilities:</h5>
-                            <ul>
-                                {selectedPokemon.abilities.split(', ').map((ability, index) => (
-                                    <li key={index}>{ability}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-
-                    {selectedPokemon.games && (
-                        <div className="games">
-                            <h5>Game Appearances:</h5>
-                            <ul>
-                                {selectedPokemon.games.split(', ').map((game, index) => (
-                                    <li key={index}>{game}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-                </div>
-            )}
+            <PokemonDetails
+                selectedPokemon={selectedPokemon}
+                currentImage={currentImage}
+                setCurrentImage={setCurrentImage}
+            />
         </div>
     );
 }
