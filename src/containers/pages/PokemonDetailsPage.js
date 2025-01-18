@@ -61,9 +61,6 @@ function PokemonDetailsPage() {
 
     return (
         <div className="pokemon-details-page">
-            <button className="go-back-btn" onClick={() => navigate(-1)}>
-                ← Go Back
-            </button>
 
             <div className="header">
                 <h1>{pokemon.name}</h1>
