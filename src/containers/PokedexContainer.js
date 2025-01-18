@@ -147,17 +147,6 @@ function PokedexContainer() {
                 </button>
             </div>
 
-            <div className="regions-navigation">
-                <h3>Explore Pokémon by Region</h3>
-                <div className="regions-links">
-                    {['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea'].map((region) => (
-                        <Link key={region} to={`/region/${region}`} className="region-link">
-                            {region.charAt(0).toUpperCase() + region.slice(1)}
-                        </Link>
-                    ))}
-                </div>
-            </div>
-
             {suggestions.length > 0 && (
                 <ul className="suggestions">
                     {suggestions.map((pokemon, index) => (

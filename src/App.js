@@ -3,6 +3,7 @@ import './App.css';
 import PokedexContainer from './containers/PokedexContainer';
 import PokemonDetailsPage from './containers/pages/PokemonDetailsPage';
 import RegionPage from './containers/pages/RegionPage';
+import Navbar from './containers/Navbar'; 
 
 function App() {
   const basename = process.env.NODE_ENV === 'production' ? '/Pokedex' : '/';
@@ -10,10 +11,12 @@ function App() {
   return (
     <Router basename={basename}>
       <div className="App">
+        <Navbar />
+
         <header className="App-header">
           <Routes>
             <Route path="/" element={<PokedexContainer />} />
-            <Route path="/region/:regionName" element={<RegionPage />} /> {/* Add this */}
+            <Route path="/region/:regionName" element={<RegionPage />} />
             <Route path="/pokemon/:name" element={<PokemonDetailsPage />} />
           </Routes>
         </header>
@@ -23,4 +26,3 @@ function App() {
 }
 
 export default App;
-

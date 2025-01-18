@@ -72,10 +72,15 @@ const RegionPage = () => {
             try {
               const pokemonResponse = await fetch(url);
               const pokemonDetails = await pokemonResponse.json();
-              const imageUrl = pokemonDetails.sprites?.other?.showdown?.front_default || '';
+              
+              const imageUrl = pokemonDetails.sprites?.other?.showdown?.front_default || pokemonDetails.sprites?.front_default || '';
+
+              const speciesId = pokemon.url.match(/\/(\d+)\/$/)?.[1] || null;
+
               return {
                 name: baseName,
                 image: imageUrl,
+                id: speciesId ? parseInt(speciesId, 10) : null,
               };
             } catch (err) {
               console.error(`Failed to fetch details for ${baseName}`);
@@ -84,8 +89,11 @@ const RegionPage = () => {
           })
         );
 
-        // Filter out any null values for Pokémon that failed to load
-        setPokemonList(pokemonData.filter(pokemon => pokemon !== null));
+        const validPokemonData = pokemonData.filter(pokemon => pokemon !== null);
+        
+        validPokemonData.sort((a, b) => (a.id || 0) - (b.id || 0));
+
+        setPokemonList(validPokemonData);
         setLoading(false);
       } catch (err) {
         console.error('Error fetching region data:', err);
