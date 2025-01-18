@@ -50,6 +50,7 @@ function PokedexContainer() {
     const fuse = new Fuse(pokemonList, { keys: ['name'], threshold: 0.4 });
 
     const handleSearch = () => {
+        setError(null); 
         if (!searchTerm.trim()) {
             setError('Please enter a Pokémon name!');
             setSuggestions([]);
@@ -60,7 +61,6 @@ function PokedexContainer() {
             setError('No Pokémon found!');
         } else {
             setSuggestions(results.map((result) => result.item));
-            setError(null);  
         }
     };
 
@@ -78,6 +78,7 @@ function PokedexContainer() {
                 image: data.sprites.front_default,
                 hoverImage: data.sprites.front_shiny || data.sprites.front_default,  
                 games: data.game_indices.map((game) => formatText(game.version.name)).join(', '),
+                types: data.types.map((type) => formatText(type.type.name)).join(', '),
             });
             setCurrentImage(data.sprites.front_default);
             setSuggestions([]);
@@ -103,7 +104,14 @@ function PokedexContainer() {
         }
     };
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) {
+        return (
+            <div className="loading-spinner">
+                <div className="spinner"></div>
+                <p>Loading...</p>
+            </div>
+        );
+    }    
 
     return (
         <div className="pokedex-container">
@@ -115,22 +123,39 @@ function PokedexContainer() {
             <div>
                 <select onChange={(e) => fetchPokemonDetails(e.target.value)}>
                     <option value="">Choose your Pokémon</option>
-                    {pokemonList.map((pokemon) => (
-                        <option key={pokemon.name} value={pokemon.url}>
-                            {formatText(pokemon.name)}
-                        </option>
-                    ))}
+                    {pokemonList
+                        .filter((pokemon) => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                        .map((pokemon) => (
+                            <option key={pokemon.name} value={pokemon.url}>
+                                {formatText(pokemon.name)}
+                            </option>
+                        ))}
                 </select>
 
                 <input
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        debouncedHandleSearch();
+                    }}
                     onKeyDown={handleKeyDown}  
                     placeholder="Enter Pokémon name..."
                 />
+
                 <button onClick={handleSearch} type="button">
-                    Search
+                    SEARCH
                 </button>
+            </div>
+
+            <div className="regions-navigation">
+                <h3>Explore Pokémon by Region</h3>
+                <div className="regions-links">
+                    {['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea'].map((region) => (
+                        <Link key={region} to={`/region/${region}`} className="region-link">
+                            {region.charAt(0).toUpperCase() + region.slice(1)}
+                        </Link>
+                    ))}
+                </div>
             </div>
 
             {suggestions.length > 0 && (
@@ -150,9 +175,9 @@ function PokedexContainer() {
                         currentImage={currentImage}
                         setCurrentImage={setCurrentImage}
                     />
-                <Link to={`/pokemon/${selectedPokemon.name.toLowerCase()}`}>
-                    <button className="view-more-btn">View More</button>
-                </Link>
+                    <Link to={`/pokemon/${encodeURIComponent(selectedPokemon.name.toLowerCase().replace(/ /g, '-'))}`}>
+                        <button className="view-more-btn">SEE MORE</button>
+                    </Link>
                 </div>
             )}
         </div>

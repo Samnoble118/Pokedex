@@ -1,4 +1,12 @@
 // Color theme variables
+
+// Import Pokemon font 
+@import url('https://fonts.cdnfonts.com/css/pokemon-solid');
+
+// font 
+$font-family-pokemon: 'Pokemon Solid', sans-serif;
+
+// Base colours
 $primary-color: #FF0000;
 $secondary-color: #CC0000;
 $accent-color: #3B4CCA;
@@ -6,3 +14,21 @@ $highlight-color: #FFDE00;
 $neutral-color: #B3A125;
 $background-color: $secondary-color;
 $text-color: #ffffff;
+
+// Lighter colours
+$primary-color-light: lighten($primary-color, 10%);
+$secondary-color-light: lighten($secondary-color, 10%);
+$accent-color-light: lighten($accent-color, 35%);
+$highlight-color-light: lighten($highlight-color, 10%);
+$neutral-color-light: lighten($neutral-color, 10%);
+$background-color-light: lighten($background-color, 10%);
+$text-color-light: lighten($text-color, 10%);
+
+// Darker colours
+$primary-color-dark: darken($primary-color, 10%);
+$secondary-color-dark: darken($secondary-color, 10%);
+$accent-color-dark: darken($accent-color, 10%);
+$highlight-color-dark: darken($highlight-color, 10%);
+$neutral-color-dark: darken($neutral-color, 10%);
+$background-color-dark: darken($background-color, 10%);
+$text-color-dark: darken($text-color, 10%);

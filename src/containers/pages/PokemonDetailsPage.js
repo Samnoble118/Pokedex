@@ -21,7 +21,14 @@ function PokemonDetailsPage() {
         const fetchPokemonDetails = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+                
+                // Check if the Pokémon requires a form (like Deoxys)
+                let formattedName = name.toLowerCase();
+                if (formattedName === 'deoxys') {
+                    formattedName = 'deoxys-normal'; // Handle Deoxys with a specific form
+                }
+
+                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${formattedName}`);
                 const data = await response.json();
                 setPokemon({
                     name: formatText(data.name),
@@ -77,7 +84,6 @@ function PokemonDetailsPage() {
                 </div>
 
                 <div className="details-column">
-                    {/* Type and Abilities - In-line */}
                     <div className="types-and-abilities">
                         <div className="types">
                             <h5>Type:</h5>
@@ -89,7 +95,6 @@ function PokemonDetailsPage() {
                         </div>
                     </div>
 
-                    {/* Stats and Height/Weight - Inline */}
                     <div className="stats-height-weight">
                         <div className="stats">
                             <h5>Stats:</h5>
@@ -114,7 +119,6 @@ function PokemonDetailsPage() {
                         </div>
                     </div>
 
-                    {/* Game Appearances - Below Stats and Height/Weight */}
                     <div className="games">
                         <h5>Game Appearances:</h5>
                         <p>{pokemon.games}</p>
